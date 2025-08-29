@@ -206,9 +206,12 @@
 
 <script>
   const allAudios = Array.from(document.querySelectorAll('audio'));
-  const FADE_DURATION = 3000; // 3 seconds fade
+  const FADE_DURATION = 2000; // 2 seconds fade
+  const fadeStep = 100; // ms per step
 
   allAudios.forEach((audio, index) => {
+    audio._lastPlayed = 0;
+
     audio.addEventListener('contextmenu', e => e.preventDefault());
 
     audio.addEventListener('loadedmetadata', () => {
@@ -221,10 +224,18 @@
       allAudios.forEach(other => {
         if (other !== audio && !other.paused) fadeOutAndPause(other);
       });
+
+      // Reset to start if previously played more than 10 seconds
+      if (audio.currentTime > 10) {
+        audio.currentTime = 0;
+      }
+
       fadeIn(audio);
     });
 
     audio.addEventListener('timeupdate', () => {
+      audio._lastPlayed = audio.currentTime;
+
       if (!audio.loop && audio.duration - audio.currentTime <= 5 && !audio._fadingOut) {
         audio._fadingOut = true;
         fadeOut(audio);
@@ -236,6 +247,7 @@
         const next = allAudios[i];
         const parent = next.closest('.track');
         if (parent.style.display !== 'none') {
+          next.currentTime = 0;
           fadeIn(next);
           next.play();
           next.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -247,7 +259,7 @@
 
   function fadeOut(audio) {
     let vol = audio.volume;
-    const step = vol / (FADE_DURATION / 100);
+    const step = vol / (FADE_DURATION / fadeStep);
     const interval = setInterval(() => {
       vol -= step;
       if (vol <= 0) {
@@ -256,12 +268,12 @@
       } else {
         audio.volume = vol;
       }
-    }, 100);
+    }, fadeStep);
   }
 
   function fadeOutAndPause(audio) {
     let vol = audio.volume;
-    const step = vol / (FADE_DURATION / 100);
+    const step = vol / (FADE_DURATION / fadeStep);
     const interval = setInterval(() => {
       vol -= step;
       if (vol <= 0) {
@@ -271,13 +283,13 @@
       } else {
         audio.volume = vol;
       }
-    }, 100);
+    }, fadeStep);
   }
 
   function fadeIn(audio) {
     audio.volume = 0;
     let vol = 0;
-    const step = 1 / (FADE_DURATION / 100);
+    const step = 1 / (FADE_DURATION / fadeStep);
     const interval = setInterval(() => {
       vol += step;
       if (vol >= 1) {
@@ -286,7 +298,7 @@
       } else {
         audio.volume = vol;
       }
-    }, 100);
+    }, fadeStep);
   }
 
   function toggleLoop(id, icon) {
@@ -316,6 +328,7 @@
     if (visibleTracks.length === 0) return;
     const randomTrack = visibleTracks[Math.floor(Math.random() * visibleTracks.length)];
     const audio = randomTrack.querySelector('audio');
+    audio.currentTime = 0;
     fadeIn(audio);
     audio.play();
     audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -332,8 +345,10 @@
 </script>
 
 
+
   
 </body>
 </html>
+
 
 
