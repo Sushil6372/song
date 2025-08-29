@@ -158,8 +158,8 @@
 
   <div class="controls">
     <input type="text" id="searchInput" placeholder="Search song..." oninput="filterTracks()">
-    <button onclick="playRandom()">🔀</button>
-    <button onclick="toggleDarkMode()">🌙</button>
+    <button onclick="playRandom()">🔀Play Random</button>
+    <button onclick="toggleDarkMode()">🌙Dark Mode</button>
   </div>
 
   <div id="trackList">
@@ -206,12 +206,10 @@
 
 <script>
   const allAudios = Array.from(document.querySelectorAll('audio'));
-  const FADE_DURATION = 2000; // 2 seconds fade
+  const FADE_DURATION = 2000; // 2 seconds
   const fadeStep = 100; // ms per step
 
   allAudios.forEach((audio, index) => {
-    audio._lastPlayed = 0;
-
     audio.addEventListener('contextmenu', e => e.preventDefault());
 
     audio.addEventListener('loadedmetadata', () => {
@@ -222,24 +220,15 @@
 
     audio.addEventListener('play', () => {
       allAudios.forEach(other => {
-        if (other !== audio && !other.paused) fadeOutAndPause(other);
+        if (other !== audio && !other.paused) {
+          other.pause();
+          other.currentTime = 0;
+        }
       });
 
-      // Reset to start if previously played more than 10 seconds
-      if (audio.currentTime > 10) {
-        audio.currentTime = 0;
-      }
-
+      // Always start from beginning
+      audio.currentTime = 0;
       fadeIn(audio);
-    });
-
-    audio.addEventListener('timeupdate', () => {
-      audio._lastPlayed = audio.currentTime;
-
-      if (!audio.loop && audio.duration - audio.currentTime <= 5 && !audio._fadingOut) {
-        audio._fadingOut = true;
-        fadeOut(audio);
-      }
     });
 
     audio.addEventListener('ended', () => {
@@ -256,35 +245,6 @@
       }
     });
   });
-
-  function fadeOut(audio) {
-    let vol = audio.volume;
-    const step = vol / (FADE_DURATION / fadeStep);
-    const interval = setInterval(() => {
-      vol -= step;
-      if (vol <= 0) {
-        audio.volume = 0;
-        clearInterval(interval);
-      } else {
-        audio.volume = vol;
-      }
-    }, fadeStep);
-  }
-
-  function fadeOutAndPause(audio) {
-    let vol = audio.volume;
-    const step = vol / (FADE_DURATION / fadeStep);
-    const interval = setInterval(() => {
-      vol -= step;
-      if (vol <= 0) {
-        audio.volume = 0;
-        audio.pause();
-        clearInterval(interval);
-      } else {
-        audio.volume = vol;
-      }
-    }, fadeStep);
-  }
 
   function fadeIn(audio) {
     audio.volume = 0;
@@ -349,6 +309,7 @@
   
 </body>
 </html>
+
 
 
 
