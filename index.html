@@ -204,58 +204,136 @@
     </div>
   </div>
 
-  <script>
-    // Disable right-click on all audio elements
-    document.querySelectorAll('audio').forEach(audio => {
-      audio.addEventListener('contextmenu', e => e.preventDefault());
+<script>
+  const allAudios = Array.from(document.querySelectorAll('audio'));
+  const FADE_DURATION = 3000; // 3 seconds fade
 
-      audio.addEventListener('loadedmetadata', () => {
-        const id = audio.id.replace('audio', 'duration');
-        const duration = formatTime(audio.duration);
-        document.getElementById(id).textContent = duration;
-      });
+  allAudios.forEach((audio, index) => {
+    audio.addEventListener('contextmenu', e => e.preventDefault());
+
+    audio.addEventListener('loadedmetadata', () => {
+      const id = audio.id.replace('audio', 'duration');
+      const duration = formatTime(audio.duration);
+      document.getElementById(id).textContent = duration;
     });
 
-    function toggleLoop(id, icon) {
-      const audio = document.getElementById(id);
-      audio.loop = !audio.loop;
-      icon.classList.toggle('active', audio.loop);
-    }
-
-    function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-
-    function filterTracks() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const tracks = document.querySelectorAll('.track');
-      tracks.forEach(track => {
-        const name = track.getAttribute('data-name').toLowerCase();
-        track.style.display = name.includes(input) ? 'flex' : 'none';
+    audio.addEventListener('play', () => {
+      allAudios.forEach(other => {
+        if (other !== audio && !other.paused) fadeOutAndPause(other);
       });
-    }
+      fadeIn(audio);
+    });
 
-    function playRandom() {
-      const tracks = Array.from(document.querySelectorAll('.track'));
-      const visibleTracks = tracks.filter(track => track.style.display !== 'none');
-      if (visibleTracks.length === 0) return;
-      const randomTrack = visibleTracks[Math.floor(Math.random() * visibleTracks.length)];
-      const audio = randomTrack.querySelector('audio');
-      audio.play();
-      audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.loop && audio.duration - audio.currentTime <= 5 && !audio._fadingOut) {
+        audio._fadingOut = true;
+        fadeOut(audio);
+      }
+    });
 
-    function setVolume(id, value) {
-      const audio = document.getElementById(id);
-      audio.volume = value;
-    }
+    audio.addEventListener('ended', () => {
+      for (let i = index + 1; i < allAudios.length; i++) {
+        const next = allAudios[i];
+        const parent = next.closest('.track');
+        if (parent.style.display !== 'none') {
+          fadeIn(next);
+          next.play();
+          next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          break;
+        }
+      }
+    });
+  });
 
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-    }
-  </script>
+  function fadeOut(audio) {
+    let vol = audio.volume;
+    const step = vol / (FADE_DURATION / 100);
+    const interval = setInterval(() => {
+      vol -= step;
+      if (vol <= 0) {
+        audio.volume = 0;
+        clearInterval(interval);
+      } else {
+        audio.volume = vol;
+      }
+    }, 100);
+  }
+
+  function fadeOutAndPause(audio) {
+    let vol = audio.volume;
+    const step = vol / (FADE_DURATION / 100);
+    const interval = setInterval(() => {
+      vol -= step;
+      if (vol <= 0) {
+        audio.volume = 0;
+        audio.pause();
+        clearInterval(interval);
+      } else {
+        audio.volume = vol;
+      }
+    }, 100);
+  }
+
+  function fadeIn(audio) {
+    audio.volume = 0;
+    let vol = 0;
+    const step = 1 / (FADE_DURATION / 100);
+    const interval = setInterval(() => {
+      vol += step;
+      if (vol >= 1) {
+        audio.volume = 1;
+        clearInterval(interval);
+      } else {
+        audio.volume = vol;
+      }
+    }, 100);
+  }
+
+  function toggleLoop(id, icon) {
+    const audio = document.getElementById(id);
+    audio.loop = !audio.loop;
+    icon.classList.toggle('active', audio.loop);
+  }
+
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  function filterTracks() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const tracks = document.querySelectorAll('.track');
+    tracks.forEach(track => {
+      const name = track.getAttribute('data-name').toLowerCase();
+      track.style.display = name.includes(input) ? 'flex' : 'none';
+    });
+  }
+
+  function playRandom() {
+    const tracks = Array.from(document.querySelectorAll('.track'));
+    const visibleTracks = tracks.filter(track => track.style.display !== 'none');
+    if (visibleTracks.length === 0) return;
+    const randomTrack = visibleTracks[Math.floor(Math.random() * visibleTracks.length)];
+    const audio = randomTrack.querySelector('audio');
+    fadeIn(audio);
+    audio.play();
+    audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function setVolume(id, value) {
+    const audio = document.getElementById(id);
+    audio.volume = value;
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+  }
+</script>
+
+
+  
 </body>
 </html>
+
 
