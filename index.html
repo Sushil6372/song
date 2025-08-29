@@ -2,21 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Music Player</title>
+  <title>Smart Music Player</title>
   <style>
+    :root {
+      --bg-color: #f9f9f9;
+      --text-color: #333;
+      --accent-color: #0078D4;
+      --track-border: #ddd;
+    }
+
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #eee;
+      --accent-color: #00bfff;
+      --track-border: #444;
+    }
+
     body {
-      background-color: #f9f9f9;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Segoe UI', sans-serif;
-      color: #333;
       padding: 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     h1 {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       font-size: 2em;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      font-size: 14px;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 8px 12px;
+      font-size: 14px;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
     .track {
@@ -25,60 +66,83 @@
       justify-content: space-between;
       width: 100%;
       max-width: 600px;
-      margin-bottom: 15px;
-      padding: 8px 12px;
-      border-bottom: 1px solid #ddd;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--track-border);
+      flex-wrap: nowrap;
     }
 
-    .track span.name {
+    .name {
       flex: 1;
-      text-align: left;
+      font-weight: bold;
       font-size: 15px;
-    }
-
-    .track span.duration {
-      width: 60px;
-      text-align: right;
-      font-size: 13px;
-      color: #666;
+      font-family: 'Roboto', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     audio {
-      width: 200px;
+      width: 180px;
       margin: 0 10px;
+      flex-shrink: 0;
+    }
+
+    .duration {
+      font-size: 12px;
+      color: var(--text-color);
+      width: 50px;
+      text-align: right;
+      flex-shrink: 0;
     }
 
     .loop-icon {
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
       user-select: none;
-      padding: 4px 8px;
+      padding: 4px 6px;
       border-radius: 4px;
       transition: background-color 0.3s ease, color 0.3s ease;
       color: #888;
+      flex-shrink: 0;
     }
 
     .loop-icon.active {
-      background-color: #0078D4;
+      background-color: var(--accent-color);
       color: #fff;
     }
 
-    @media (max-width: 700px) {
-      .track {
-        flex-direction: column;
-        align-items: center;
-      }
+    .volume {
+      width: 80px;
+      margin-left: 10px;
+    }
 
-      .track span.name,
-      .track span.duration {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 5px;
+    @media (max-width: 500px) {
+      .track {
+        font-size: 14px;
+        padding: 4px 6px;
       }
 
       audio {
-        width: 100%;
-        margin: 5px 0;
+        width: 140px;
+      }
+
+      .name {
+        font-size: 14px;
+      }
+
+      .duration {
+        font-size: 11px;
+        width: 45px;
+      }
+
+      .loop-icon {
+        font-size: 14px;
+        padding: 3px 5px;
+      }
+
+      .volume {
+        width: 60px;
       }
     }
   </style>
@@ -86,40 +150,52 @@
 <body>
   <h1>🎵 My Music Player</h1>
 
-  <div class="track">
-    <span class="name">3:59 AM</span>
-    <audio id="audio1" controls>
-      <source src="music/359AM.mp3" type="audio/mpeg">
-    </audio>
-    <span class="duration" id="duration1">--:--</span>
-    <div class="loop-icon" onclick="toggleLoop('audio1', this)">🔁</div>
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search song..." oninput="filterTracks()">
+    <button onclick="playRandom()">🔀 Random Play</button>
+    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
   </div>
 
-  <div class="track">
-    <span class="name">Rain</span>
-    <audio id="audio2" controls>
-      <source src="music/DIVINE - Rain  Prod. by Stunnah Beatz  Official Music Video.mp3" type="audio/mpeg">
-    </audio>
-    <span class="duration" id="duration2">--:--</span>
-    <div class="loop-icon" onclick="toggleLoop('audio2', this)">🔁</div>
-  </div>
+  <div id="trackList">
+    <div class="track" data-name="3:59 AM">
+      <span class="name">3:59 AM</span>
+      <audio id="audio1" controls>
+        <source src="music/359AM.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio1', this.value)">
+      <span class="duration" id="duration1">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio1', this)">🔁</div>
+    </div>
 
-  <div class="track">
-    <span class="name">TT/Shutdown</span>
-    <audio id="audio3" controls>
-      <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
-    </audio>
-    <span class="duration" id="duration3">--:--</span>
-    <div class="loop-icon" onclick="toggleLoop('audio3', this)">🔁</div>
-  </div>
+    <div class="track" data-name="Rain">
+      <span class="name">Rain</span>
+      <audio id="audio2" controls>
+        <source src="music/DIVINE - Rain  Prod. by Stunnah Beatz  Official Music Video.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio2', this.value)">
+      <span class="duration" id="duration2">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio2', this)">🔁</div>
+    </div>
 
-  <div class="track">
-    <span class="name">Rain</span>
-    <audio id="audio4" controls>
-      <source src="music/Rain.mp3" type="audio/mpeg">
-    </audio>
-    <span class="duration" id="duration4">--:--</span>
-    <div class="loop-icon" onclick="toggleLoop('audio4', this)">🔁</div>
+    <div class="track" data-name="TT/Shutdown">
+      <span class="name">TT/Shutdown</span>
+      <audio id="audio3" controls>
+        <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio3', this.value)">
+      <span class="duration" id="duration3">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio3', this)">🔁</div>
+    </div>
+
+    <div class="track" data-name="Rain">
+      <span class="name">Rain</span>
+      <audio id="audio4" controls>
+        <source src="music/Rain.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio4', this.value)">
+      <span class="duration" id="duration4">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio4', this)">🔁</div>
+    </div>
   </div>
 
   <script>
@@ -127,7 +203,6 @@
     document.querySelectorAll('audio').forEach(audio => {
       audio.addEventListener('contextmenu', e => e.preventDefault());
 
-      // Show duration once metadata is loaded
       audio.addEventListener('loadedmetadata', () => {
         const id = audio.id.replace('audio', 'duration');
         const duration = formatTime(audio.duration);
@@ -135,18 +210,44 @@
       });
     });
 
-    // Toggle loop and update icon style
     function toggleLoop(id, icon) {
       const audio = document.getElementById(id);
       audio.loop = !audio.loop;
       icon.classList.toggle('active', audio.loop);
     }
 
-    // Format seconds to mm:ss
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
       return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function filterTracks() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const tracks = document.querySelectorAll('.track');
+      tracks.forEach(track => {
+        const name = track.getAttribute('data-name').toLowerCase();
+        track.style.display = name.includes(input) ? 'flex' : 'none';
+      });
+    }
+
+    function playRandom() {
+      const tracks = Array.from(document.querySelectorAll('.track'));
+      const visibleTracks = tracks.filter(track => track.style.display !== 'none');
+      if (visibleTracks.length === 0) return;
+      const randomTrack = visibleTracks[Math.floor(Math.random() * visibleTracks.length)];
+      const audio = randomTrack.querySelector('audio');
+      audio.play();
+      audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function setVolume(id, value) {
+      const audio = document.getElementById(id);
+      audio.volume = value;
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
     }
   </script>
 </body>
