@@ -103,14 +103,14 @@
     }
 
     .loop-icon {
-      font-size: 16px;
-      cursor: pointer;
-      user-select: none;
-      padding: 4px 6px;
-      border-radius: 4px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      color: #888;
-      flex-shrink: 0;
+    font-size: 16px;
+    cursor: pointer;
+    user-select: none;
+    padding: 4px 6px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #8e7d7d;
+    flex-shrink: 0;
     }
 
     .loop-icon.active {
@@ -158,8 +158,8 @@
 
   <div class="controls">
     <input type="text" id="searchInput" placeholder="Search song..." oninput="filterTracks()">
-    <button onclick="playRandom()">🔀 Random Play</button>
-    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    <button onclick="playRandom()">🔀</button>
+    <button onclick="toggleDarkMode()">🌙</button>
   </div>
 
   <div id="trackList">
@@ -258,3 +258,4 @@
   </script>
 </body>
 </html>
+
