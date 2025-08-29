@@ -5,25 +5,55 @@
   <title>Music Player</title>
   <style>
     body {
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      padding-top: 50px;
+      padding: 40px;
+      color: #333;
     }
-    audio {
-      width: 300px;
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1em;
+      margin-bottom: 30px;
+    }
+
+    .track {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      padding: 20px;
       margin: 20px auto;
-      display: block;
+      width: 320px;
     }
-    iframe {
-      width: 560px;
-      height: 315px;
-      margin: 20px auto;
-      display: block;
-      border: none;
-    }
+
     h3 {
-      margin-top: 40px;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    audio {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #d0d0d0;
     }
   </style>
 </head>
@@ -31,30 +61,54 @@
   <h1>🎵 Welcome to My Music Player</h1>
   <p>Click play to enjoy the music!</p>
 
-  <h3>3:59 AM (Local MP3)</h3>
-  <audio controls>
-    <source src="music/359AM.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <div class="track">
+    <h3>3:59 AM (Local MP3)</h3>
+    <audio id="audio1" controls>
+      <source src="music/359AM.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <button onclick="toggleLoop('audio1')">Toggle Loop</button>
+  </div>
 
-  <h3>Rain</h3>
-  <audio controls>
-    <source src="music/DIVINE - Rain  Prod. by Stunnah Beatz  Official Music Video.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <div class="track">
+    <h3>Rain</h3>
+    <audio id="audio2" controls>
+      <source src="music/DIVINE - Rain  Prod. by Stunnah Beatz  Official Music Video.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <button onclick="toggleLoop('audio2')">Toggle Loop</button>
+  </div>
 
-  <h3>TT/Shutdown</h3>
-  <audio controls>
-    <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <div class="track">
+    <h3>TT/Shutdown</h3>
+    <audio id="audio3" controls>
+      <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <button onclick="toggleLoop('audio3')">Toggle Loop</button>
+  </div>
 
-  <h3>Rain</h3>
-  <audio controls>
-    <source src="music/Rain.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <div class="track">
+    <h3>Rain</h3>
+    <audio id="audio4" controls>
+      <source src="music/Rain.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <button onclick="toggleLoop('audio4')">Toggle Loop</button>
+  </div>
 
+  <script>
+    // Disable right-click on all audio elements
+    document.querySelectorAll('audio').forEach(audio => {
+      audio.addEventListener('contextmenu', e => e.preventDefault());
+    });
+
+    // Toggle loop functionality
+    function toggleLoop(id) {
+      const audio = document.getElementById(id);
+      audio.loop = !audio.loop;
+      alert("Loop is now " + (audio.loop ? "enabled" : "disabled") + " for " + id);
+    }
+  </script>
 </body>
 </html>
-
