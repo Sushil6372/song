@@ -15,13 +15,30 @@
       margin: 20px auto;
       display: block;
     }
+    iframe {
+      width: 560px;
+      height: 315px;
+      margin: 20px auto;
+      display: block;
+      border: none;
+    }
+    h3 {
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
   <h1>🎵 Welcome to My Music Player</h1>
   <p>Click play to enjoy the music!</p>
 
-  <h3>3:59 AM</h3>
+  <h3>3:59 AM (YouTube Embed)</h3>
+  <iframe 
+    src="https://www.youtube.com/embed/eHyl9KG9RWA" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+
+  <h3>3:59 AM (Local MP3)</h3>
   <audio controls>
     <source src="music/359AM.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -33,13 +50,13 @@
     Your browser does not support the audio element.
   </audio>
 
-    <h3>TT/Shutdown</h3>
+  <h3>TT/Shutdown</h3>
   <audio controls>
     <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-    <h3>Rain</h3>
+  <h3>Rain</h3>
   <audio controls>
     <source src="music/Rain.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -47,5 +64,3 @@
 
 </body>
 </html>
-
-
