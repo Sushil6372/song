@@ -1,154 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Futuristic Music Player</title>
+  <meta charset="UTF-8">
+  <title>Smart Music Player</title>
   <style>
     :root {
-      --text-color: #222;
-      --track-border: #ccc;
+      --bg-color: #f9f9f9;
+      --text-color: #333;
+      --accent-color: #0078D4;
+      --track-border: #ddd;
     }
+
     body.dark {
-      --text-color: #fff;
-      --track-border: #555;
-      background-color: #121212;
-      color: #fff;
+      --bg-color: #1e1e1e;
+      --text-color: #eee;
+      --accent-color: #00bfff;
+      --track-border: #444;
     }
+
     body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
-    .player {
-      max-width: 400px;
-      margin: auto;
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    body.dark .player {
-      background: #1e1e1e;
-    }
-    .track {
+
+    h1 {
       margin-bottom: 20px;
+      font-size: 2em;
     }
-    .track h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-    .duration {
-      font-size: 12px;
-      font-weight: 500;
-      background-color: rgba(0, 0, 0, 0.05);
-      padding: 2px 6px;
-      border-radius: 12px;
-      color: var(--text-color);
-      border: 1px solid var(--track-border);
-      display: inline-block;
-    }
-    body.dark .duration {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border-color: #555;
-    }
+
     .controls {
       display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-    .controls button {
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
-      background-color: #007aff;
+
+    input[type="text"] {
+      padding: 8px;
+      font-size: 14px;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 8px 12px;
+      font-size: 14px;
+      background-color: var(--accent-color);
       color: white;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
-    .controls button:hover {
-      background-color: #005bb5;
+
+    .track {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--track-border);
+      flex-wrap: nowrap;
     }
-    .mode-toggle {
-      margin-top: 30px;
-      text-align: center;
+
+    .name {
+      flex: 1;
+      font-weight: bold;
+      font-size: 15px;
+      font-family: 'Roboto', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    audio {
+      width: 180px;
+      margin: 0 10px;
+      flex-shrink: 0;
+    }
+
+    .duration {
+      font-size: 11px;
+      font-weight: 400;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text-color);
+      background-color: rgba(0, 0, 0, 0.04);
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--track-border);
+      text-align: right;
+      width: 50px;
+      flex-shrink: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark .duration {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #cfd8dc;
+      border-color: #555;
+    }
+
+    .loop-icon {
+      font-size: 16px;
+      cursor: pointer;
+      user-select: none;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      color: #888;
+      flex-shrink: 0;
+    }
+
+    .loop-icon.active {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    .volume {
+      width: 80px;
+      margin-left: 10px;
+    }
+
+    @media (max-width: 500px) {
+      .track {
+        font-size: 14px;
+        padding: 4px 6px;
+      }
+
+      audio {
+        width: 140px;
+      }
+
+      .name {
+        font-size: 14px;
+      }
+
+      .duration {
+        font-size: 10px;
+        width: 45px;
+      }
+
+      .loop-icon {
+        font-size: 14px;
+        padding: 3px 5px;
+      }
+
+      .volume {
+        width: 60px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="player">
-    <div class="track">
-      <h3>Track 1</h3>
-      <audio src="track1.mp3" controls></audio>
-      <div class="duration">3:45</div>
+  <h1>🎵 My Music Player</h1>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search song..." oninput="filterTracks()">
+    <button onclick="playRandom()">🔀 Random Play</button>
+    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+  </div>
+
+  <div id="trackList">
+    <div class="track" data-name="3:59 AM">
+      <span class="name">3:59 AM</span>
+      <audio id="audio1" controls>
+        <source src="music/359AM.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio1', this.value)">
+      <span class="duration" id="duration1">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio1', this)">🔁</div>
     </div>
-    <div class="track">
-      <h3>Track 2</h3>
-      <audio src="track2.mp3" controls></audio>
-      <div class="duration">4:12</div>
+
+    <div class="track" data-name="Rain">
+      <span class="name">Rain</span>
+      <audio id="audio2" controls>
+        <source src="music/DIVINE - Rain  Prod. by Stunnah Beatz  Official Music Video.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio2', this.value)">
+      <span class="duration" id="duration2">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio2', this)">🔁</div>
     </div>
-    <div class="track">
-      <h3>Track 3</h3>
-      <audio src="track3.mp3" controls></audio>
-      <div class="duration">2:58</div>
+
+    <div class="track" data-name="TT/Shutdown">
+      <span class="name">TT/Shutdown</span>
+      <audio id="audio3" controls>
+        <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio3', this.value)">
+      <span class="duration" id="duration3">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio3', this)">🔁</div>
     </div>
-    <div class="mode-toggle">
-      <button onclick="toggleMode()">Toggle Dark/Light Mode</button>
+
+    <div class="track" data-name="Rain">
+      <span class="name">Rain</span>
+      <audio id="audio4" controls>
+        <source src="music/Rain.mp3" type="audio/mpeg">
+      </audio>
+      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume('audio4', this.value)">
+      <span class="duration" id="duration4">--:--</span>
+      <div class="loop-icon" onclick="toggleLoop('audio4', this)">🔁</div>
     </div>
   </div>
 
   <script>
-    let currentAudio = null;
-
-    function fadeOut(audio, callback) {
-      let vol = audio.volume;
-      const fade = setInterval(() => {
-        if (vol > 0.05) {
-          vol -= 0.05;
-          audio.volume = vol;
-        } else {
-          clearInterval(fade);
-          audio.pause();
-          audio.currentTime = 0;
-          audio.volume = 1;
-          if (callback) callback();
-        }
-      }, 50);
-    }
-
-    function fadeIn(audio) {
-      audio.volume = 0;
-      audio.play();
-      let vol = 0;
-      const fade = setInterval(() => {
-        if (vol < 1) {
-          vol += 0.05;
-          audio.volume = vol;
-        } else {
-          clearInterval(fade);
-        }
-      }, 50);
-    }
-
     document.querySelectorAll('audio').forEach(audio => {
+      audio.addEventListener('contextmenu', e => e.preventDefault());
+
+      audio.addEventListener('loadedmetadata', () => {
+        const id = audio.id.replace('audio', 'duration');
+        const duration = formatTime(audio.duration);
+        document.getElementById(id).textContent = duration;
+      });
+
       audio.addEventListener('play', () => {
-        if (currentAudio && currentAudio !== audio) {
-          fadeOut(currentAudio, () => {
-            currentAudio = audio;
-            fadeIn(audio);
-          });
-        } else {
-          currentAudio = audio;
-        }
+        document.querySelectorAll('audio').forEach(other => {
+          if (other !== audio) {
+            other.pause();
+            other.currentTime = 0;
+          }
+        });
       });
     });
 
-    function toggleMode() {
-      document.body.classList.toggle('dark');
+    function toggleLoop(id, icon) {
+      const audio = document.getElementById(id);
+      audio.loop = !audio.loop;
+      icon.classList.toggle('active', audio.loop);
     }
-  </script>
-</body>
-</html>
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function filterTracks() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const tracks = document.querySelectorAll('.track');
+      tracks.forEach(track => {
+        const name = track.getAttribute('data-name').toLowerCase();
+        track.style.display = name.includes(input) ? 'flex' : 'none';
+      });
+    }
+
+    function playRandom() {
+      const tracks = Array.from(document.querySelectorAll('.track'));
+      const visibleTracks = tracks.filter(track => track.style.display !== 'none');
+      if (visibleTracks.length === 0) return;
+      const randomTrack = visibleTracks[Math.floor(Math.random
