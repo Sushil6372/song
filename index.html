@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Minimal Music Player</title>
+  <title>Music Player</title>
   <style>
     body {
       background-color: #f9f9f9;
       font-family: 'Segoe UI', sans-serif;
       color: #333;
+      padding: 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 30px;
     }
 
     h1 {
@@ -21,46 +21,64 @@
 
     .track {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .info {
-      display: flex;
       justify-content: space-between;
       width: 100%;
-      font-size: 14px;
-      margin-bottom: 5px;
+      max-width: 600px;
+      margin-bottom: 15px;
+      padding: 8px 12px;
+      border-bottom: 1px solid #ddd;
     }
 
-    .info span {
+    .track span.name {
       flex: 1;
-      text-align: center;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    .track span.duration {
+      width: 60px;
+      text-align: right;
+      font-size: 13px;
+      color: #666;
     }
 
     audio {
-      width: 100%;
+      width: 200px;
+      margin: 0 10px;
     }
 
     .loop-icon {
       font-size: 18px;
       cursor: pointer;
-      margin-top: 5px;
       user-select: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, color 0.3s ease;
       color: #888;
-      transition: color 0.3s ease;
     }
 
     .loop-icon.active {
-      color: #0078D4;
+      background-color: #0078D4;
+      color: #fff;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 700px) {
       .track {
-        max-width: 90%;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .track span.name,
+      .track span.duration {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+
+      audio {
+        width: 100%;
+        margin: 5px 0;
       }
     }
   </style>
@@ -69,47 +87,39 @@
   <h1>🎵 My Music Player</h1>
 
   <div class="track">
-    <div class="info">
-      <span>3:59 AM</span>
-      <span id="duration1">--:--</span>
-    </div>
+    <span class="name">3:59 AM</span>
     <audio id="audio1" controls>
       <source src="music/359AM.mp3" type="audio/mpeg">
     </audio>
-    <div class="loop-icon" onclick="toggleLoop('audio1', this)">🔁 Loop</div>
+    <span class="duration" id="duration1">--:--</span>
+    <div class="loop-icon" onclick="toggleLoop('audio1', this)">🔁</div>
   </div>
 
   <div class="track">
-    <div class="info">
-      <span>Rain</span>
-      <span id="duration2">--:--</span>
-    </div>
+    <span class="name">Rain</span>
     <audio id="audio2" controls>
       <source src="music/DIVINE - Rain  Prod. by Stunnah Beatz  Official Music Video.mp3" type="audio/mpeg">
     </audio>
-    <div class="loop-icon" onclick="toggleLoop('audio2', this)">🔁 Loop</div>
+    <span class="duration" id="duration2">--:--</span>
+    <div class="loop-icon" onclick="toggleLoop('audio2', this)">🔁</div>
   </div>
 
   <div class="track">
-    <div class="info">
-      <span>TT/Shutdown</span>
-      <span id="duration3">--:--</span>
-    </div>
+    <span class="name">TT/Shutdown</span>
     <audio id="audio3" controls>
       <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
     </audio>
-    <div class="loop-icon" onclick="toggleLoop('audio3', this)">🔁 Loop</div>
+    <span class="duration" id="duration3">--:--</span>
+    <div class="loop-icon" onclick="toggleLoop('audio3', this)">🔁</div>
   </div>
 
   <div class="track">
-    <div class="info">
-      <span>Rain</span>
-      <span id="duration4">--:--</span>
-    </div>
+    <span class="name">Rain</span>
     <audio id="audio4" controls>
       <source src="music/Rain.mp3" type="audio/mpeg">
     </audio>
-    <div class="loop-icon" onclick="toggleLoop('audio4', this)">🔁 Loop</div>
+    <span class="duration" id="duration4">--:--</span>
+    <div class="loop-icon" onclick="toggleLoop('audio4', this)">🔁</div>
   </div>
 
   <script>
