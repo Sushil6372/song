@@ -1,0 +1,132 @@
+body {
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #fdfdfd;
+  color: #333;
+  padding: 10px;
+  text-align: center;
+}
+
+body.dark {
+  background: #1e1e1e;
+  color: #eee;
+}
+
+.controls {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+input[type="text"], button, input[type="range"] {
+padding: 6px;
+    border-radius: 16px;
+    border: 2px solid gray;
+    font-weight: bold;
+    border: 2px solid #3ab7d1;
+    background: repeating-linear-gradient(45deg, black, transparent 100px);
+    background-color: #2b8edf;
+    color: wheat;
+}
+
+
+button.active {
+  border: 2px solid #0078D4;
+  border-radius: 12px;
+  background-color: #e0f0ff;
+}
+
+body.dark button.active {
+  border: 2px solid lightblue;
+  background-color: #333;
+}
+
+.track {
+  background: #fff;
+  margin: 8px auto;
+  padding: 12px;
+  border-radius: 14px;
+  max-width: 600px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.track:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+body.dark .track {
+  background: #2a2a2a;
+}
+
+.name {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: cursive;
+  margin-bottom: 6px;
+}
+
+.player {
+  display: none;
+  margin-top: 8px;
+}
+
+.player.active {
+  display: block;
+}
+
+.player .progress {
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.player .progress input[type="range"] {
+  width: 300px;
+}
+
+.player .controls button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  margin: 0 6px;
+  cursor: pointer;
+  color: black;
+}
+
+body.dark .player .controls button {
+  color: lightblue;
+}
+
+.player .controls i {
+  pointer-events: none;
+}
+/* Default button style */
+button {
+  transition: all 0.2s ease;
+}
+
+/* Active indicator for light mode */
+body:not(.dark) button.active {
+  border: 2px solid #0078D4;
+  background-color: #0078D4;
+  color: white;
+  width: 45px;
+}
+
+/* Active indicator for dark mode */
+body.dark button.active {
+    border: 2px solid rgb(9, 79, 102);
+    background-color: rgb(43 100 121);
+    color: #36f5e5;
+    width: 45px;
+}
+
+
