@@ -8,41 +8,60 @@
       background-color: #f9f9f9;
       font-family: 'Segoe UI', sans-serif;
       color: #333;
-      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
     }
 
     h1 {
-      text-align: center;
       margin-bottom: 30px;
+      font-size: 2em;
     }
 
     .track {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 400px;
     }
 
-    .track h3 {
-      margin: 0;
+    .info {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
       font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .info span {
       flex: 1;
-      text-align: left;
+      text-align: center;
     }
 
     audio {
-      width: 200px;
+      width: 100%;
     }
 
     .loop-icon {
-      cursor: pointer;
       font-size: 18px;
+      cursor: pointer;
+      margin-top: 5px;
       user-select: none;
+      color: #888;
       transition: color 0.3s ease;
     }
 
     .loop-icon.active {
       color: #0078D4;
+    }
+
+    @media (max-width: 500px) {
+      .track {
+        max-width: 90%;
+      }
     }
   </style>
 </head>
@@ -50,41 +69,60 @@
   <h1>🎵 My Music Player</h1>
 
   <div class="track">
-    <h3>3:59 AM</h3>
+    <div class="info">
+      <span>3:59 AM</span>
+      <span id="duration1">--:--</span>
+    </div>
     <audio id="audio1" controls>
       <source src="music/359AM.mp3" type="audio/mpeg">
     </audio>
-    <span class="loop-icon" onclick="toggleLoop('audio1', this)">🔁</span>
+    <div class="loop-icon" onclick="toggleLoop('audio1', this)">🔁 Loop</div>
   </div>
 
   <div class="track">
-    <h3>Rain</h3>
+    <div class="info">
+      <span>Rain</span>
+      <span id="duration2">--:--</span>
+    </div>
     <audio id="audio2" controls>
       <source src="music/DIVINE - Rain  Prod. by Stunnah Beatz  Official Music Video.mp3" type="audio/mpeg">
     </audio>
-    <span class="loop-icon" onclick="toggleLoop('audio2', this)">🔁</span>
+    <div class="loop-icon" onclick="toggleLoop('audio2', this)">🔁 Loop</div>
   </div>
 
   <div class="track">
-    <h3>TT/Shutdown</h3>
+    <div class="info">
+      <span>TT/Shutdown</span>
+      <span id="duration3">--:--</span>
+    </div>
     <audio id="audio3" controls>
       <source src="music/Seedhe Maut - TT  Shutdown.mp3" type="audio/mpeg">
     </audio>
-    <span class="loop-icon" onclick="toggleLoop('audio3', this)">🔁</span>
+    <div class="loop-icon" onclick="toggleLoop('audio3', this)">🔁 Loop</div>
   </div>
 
   <div class="track">
-    <h3>Rain</h3>
+    <div class="info">
+      <span>Rain</span>
+      <span id="duration4">--:--</span>
+    </div>
     <audio id="audio4" controls>
       <source src="music/Rain.mp3" type="audio/mpeg">
     </audio>
-    <span class="loop-icon" onclick="toggleLoop('audio4', this)">🔁</span>
+    <div class="loop-icon" onclick="toggleLoop('audio4', this)">🔁 Loop</div>
   </div>
 
   <script>
     // Disable right-click on all audio elements
     document.querySelectorAll('audio').forEach(audio => {
       audio.addEventListener('contextmenu', e => e.preventDefault());
+
+      // Show duration once metadata is loaded
+      audio.addEventListener('loadedmetadata', () => {
+        const id = audio.id.replace('audio', 'duration');
+        const duration = formatTime(audio.duration);
+        document.getElementById(id).textContent = duration;
+      });
     });
 
     // Toggle loop and update icon style
@@ -92,6 +130,13 @@
       const audio = document.getElementById(id);
       audio.loop = !audio.loop;
       icon.classList.toggle('active', audio.loop);
+    }
+
+    // Format seconds to mm:ss
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
   </script>
 </body>
