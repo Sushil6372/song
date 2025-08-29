@@ -209,16 +209,28 @@
 
 <script>
   const allAudios = Array.from(document.querySelectorAll('audio'));
-  const FADE_DURATION = 2000; // 2 seconds
+  const FADE_DURATION = 2000; // 2 seconds fade
   const fadeStep = 100; // ms per step
 
   allAudios.forEach((audio, index) => {
+    audio._justSeeked = false;
+
     audio.addEventListener('contextmenu', e => e.preventDefault());
 
     audio.addEventListener('loadedmetadata', () => {
       const id = audio.id.replace('audio', 'duration');
       const duration = formatTime(audio.duration);
       document.getElementById(id).textContent = duration;
+    });
+
+    audio.addEventListener('seeking', () => {
+      audio._justSeeked = true;
+    });
+
+    audio.addEventListener('seeked', () => {
+      setTimeout(() => {
+        audio._justSeeked = false;
+      }, 500);
     });
 
     audio.addEventListener('play', () => {
@@ -229,8 +241,11 @@
         }
       });
 
-      // Always start from beginning
-      audio.currentTime = 0;
+      // Only reset if not manually seeking
+      if (!audio._justSeeked) {
+        audio.currentTime = 0;
+      }
+
       fadeIn(audio);
     });
 
@@ -309,9 +324,11 @@
 
 
 
+
   
 </body>
 </html>
+
 
 
 
