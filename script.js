@@ -8,7 +8,6 @@ const shuffleTopBtn = document.getElementById('shuffleTopBtn');
 let currentAudio = null;
 let currentPlayer = null;
 
-// Enable dark mode by default
 document.body.classList.add('dark');
 darkModeBtn.classList.add('active');
 
@@ -83,7 +82,6 @@ fetch('songs.json')
       track.appendChild(player);
       track.appendChild(audio);
       trackList.appendChild(track);
-
       audio.addEventListener('loadedmetadata', () => {
         totalTime.textContent = formatTime(audio.duration);
         seekBar.max = Math.floor(audio.duration);
@@ -136,6 +134,8 @@ fetch('songs.json')
       nextBtn.addEventListener('click', () => {
         const next = track.nextElementSibling;
         if (next) {
+          trackList.removeChild(track);
+          trackList.appendChild(track);
           const nextAudio = next.querySelector('audio');
           stopOthers();
           fadeIn(nextAudio);
@@ -165,6 +165,8 @@ fetch('songs.json')
 
       audio.addEventListener('ended', () => {
         const next = track.nextElementSibling;
+        trackList.removeChild(track);
+        trackList.appendChild(track);
         if (next) {
           const nextAudio = next.querySelector('audio');
           stopOthers();
@@ -190,7 +192,6 @@ fetch('songs.json')
       });
     });
   });
-
 darkModeBtn.addEventListener('click', () => {
   document.body.classList.toggle('dark');
   darkModeBtn.classList.toggle('active');
