@@ -5,19 +5,15 @@ body {
   padding: 10px;
   text-align: center;
 }
-
-h1{
+h1 {
   font-size: 33px;
   font-weight: bold;
   font-family: cursive;
 }
-
 body.dark {
-    background: #01301c;
-    color: #cdf5db;
-    font-family: 'FontAwesome'; 
+  background: #01301c;
+  color: #cdf5db;
 }
-
 .controls {
   margin-bottom: 15px;
   display: flex;
@@ -25,31 +21,26 @@ body.dark {
   gap: 8px;
   flex-wrap: wrap;
 }
-
 input[type="text"], button, input[type="range"] {
-    padding: 8px;
-    border-radius: 16px;
-    font-weight: bold;
-    border: 2px solid #b1edb3;
-    background: repeating-linear-gradient(45deg, #08300b, transparent 100px);
-    background-color: #12b168;
-    color: #76f5bc;
+  padding: 8px;
+  border-radius: 16px;
+  font-weight: bold;
+  border: 2px solid #b1edb3;
+  background: repeating-linear-gradient(45deg, #08300b, transparent 100px);
+  background-color: #12b168;
+  color: #76f5bc;
 }
-
-
 button.active {
   border: 2px solid #0078D4;
   border-radius: 12px;
   background-color: #e0f0ff;
 }
-
 body.dark button.active {
-border: 2px solid rgb(157 249 195);
-    background-color: rgb(28 84 37);
-    width: 45px;
-    height: 45px;
+  border: 2px solid rgb(157 249 195);
+  background-color: rgb(28 84 37);
+  width: 45px;
+  height: 45px;
 }
-
 .track {
   background: #fff;
   margin: 8px auto;
@@ -60,32 +51,26 @@ border: 2px solid rgb(157 249 195);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
-
 .track:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-
 body.dark .track {
   background: linear-gradient(43deg, #012013, #01301c, #298f64);
 }
-
 .name {
   font-size: 30px;
   font-weight: bold;
   font-family: cursive;
   margin-bottom: 6px;
 }
-
 .player {
   display: none;
   margin-top: 8px;
 }
-
 .player.active {
   display: block;
 }
-
 .player .progress {
   font-size: 25px;
   display: flex;
@@ -96,11 +81,13 @@ body.dark .track {
   font-weight: bold;
   font-size: 20px;
 }
-
 .player .progress input[type="range"] {
   width: 300px;
+  accent-color: #0a285a;
+  background: #0a285a;
+  border-radius: 3px;
+  height: 5px;
 }
-
 .player .controls button {
   background: none;
   border: none;
@@ -109,44 +96,65 @@ body.dark .track {
   cursor: pointer;
   color: black;
 }
-
 body.dark .player .controls button {
   color: lightblue;
 }
-
 .player .controls i {
   pointer-events: none;
 }
-/* Default button style */
 button {
   transition: all 0.2s ease;
 }
-
-/* Active indicator for light mode */
 body:not(.dark) button.active {
   border: 2px solid #0078D4;
   background-color: #0078D4;
   color: white;
   width: 45px;
 }
-
-/* Active indicator for dark mode */
 body.dark button.active {
-    border: 2px solid rgb(9, 79, 102);
-    background-color: rgb(43 100 121);
-    color: #36f5e5;
-    width: 45px;
+  border: 2px solid rgb(9, 79, 102);
+  background-color: rgb(43 100 121);
+  color: #36f5e5;
+  width: 45px;
 }
 
-.sticky-track {
+/* Sticky bottom player */
+#bottomPlayer {
+  display: none;
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  left: 0; right: 0; bottom: 0;
   z-index: 999;
-  background: inherit;
+  background: #181f2c;
+  color: #fff;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+  padding: 12px 14px 8px 14px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-direction: column;
 }
+#bottomPlayer.active { display: flex; }
+#bottomPlayer .bp-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+#bottomPlayer .bp-controls { display: flex; gap: 14px; justify-content: center; }
+#bottomPlayer .bp-controls button { background: none; border: none; color: #fff; font-size: 1.4em; cursor: pointer; }
+#bottomPlayer .bp-progress { display: flex; align-items: center; gap: 7px; width: 95%; margin: auto;}
+#bottomPlayer .bp-progress input[type="range"] {
+  width: 100%;
+  accent-color: #0a285a;
+  background: #0a285a;
+  border-radius: 3px;
+  height: 5px;
+}
+#bottomPlayer .bp-current, #bottomPlayer .bp-total { width: 46px; display: inline-block; text-align: center; }
 
-
-
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  #bottomPlayer {padding: 8px 4px; font-size: 0.97em;}
+  #bottomPlayer .bp-title {font-size: 0.97em;}
+  #bottomPlayer .bp-controls button {font-size: 1.1em;}
+  .player .progress input[type="range"] {width: 120px;}
+}
