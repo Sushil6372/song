@@ -82,7 +82,6 @@ fetch('songs.json')
       track.appendChild(player);
       track.appendChild(audio);
       trackList.appendChild(track);
-
       audio.addEventListener('loadedmetadata', () => {
         totalTime.textContent = formatTime(audio.duration);
         seekBar.max = Math.floor(audio.duration);
@@ -110,7 +109,7 @@ fetch('songs.json')
           player.classList.add('active');
           currentAudio = audio;
           currentPlayer = player;
-          stickTrackToBottom(track);
+          moveTrackToTop(track);
         } else {
           audio.pause();
           playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -133,14 +132,13 @@ fetch('songs.json')
         currentAudio = randomAudio;
         currentPlayer = random.querySelector('.player');
         random.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-        stickTrackToBottom(random);
+        moveTrackToTop(random);
       });
 
       nextBtn.addEventListener('click', () => {
         const next = track.nextElementSibling;
         if (next) {
-          trackList.removeChild(track);
-          trackList.appendChild(track);
+          moveTrackToTop(track);
           const nextAudio = next.querySelector('audio');
           stopOthers();
           fadeIn(nextAudio);
@@ -149,7 +147,7 @@ fetch('songs.json')
           currentAudio = nextAudio;
           currentPlayer = next.querySelector('.player');
           next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          stickTrackToBottom(next);
+          moveTrackToTop(next);
         }
       });
 
@@ -166,13 +164,12 @@ fetch('songs.json')
           currentAudio = prevAudio;
           currentPlayer = prev.querySelector('.player');
           prev.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          stickTrackToBottom(prev);
+          moveTrackToTop(prev);
         }
       });
 
       audio.addEventListener('ended', () => {
-        trackList.removeChild(track);
-        trackList.appendChild(track);
+        moveTrackToTop(track);
         const next = track.nextElementSibling;
         if (next) {
           const nextAudio = next.querySelector('audio');
@@ -183,7 +180,7 @@ fetch('songs.json')
           currentAudio = nextAudio;
           currentPlayer = next.querySelector('.player');
           next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          stickTrackToBottom(next);
+          moveTrackToTop(next);
         }
       });
 
@@ -195,7 +192,7 @@ fetch('songs.json')
         player.classList.add('active');
         currentAudio = audio;
         currentPlayer = player;
-        stickTrackToBottom(track);
+        moveTrackToTop(track);
       });
     });
   });
@@ -273,8 +270,9 @@ function formatTime(seconds) {
   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function stickTrackToBottom(track) {
-  document.querySelectorAll('.track').forEach(t => t.classList.remove('sticky-track'));
-  track.classList.add('sticky-track');
+function moveTrackToTop(track) {
+  if (trackList.contains(track)) {
+    trackList.removeChild(track);
+    trackList.insertBefore(track, trackList.firstChild);
+  }
 }
-
