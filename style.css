@@ -59,13 +59,14 @@ body.dark button.active {
 }
 
 body.dark .track {
-  background: linear-gradient(270deg, #3a8dd5, #f9a26c, #f78fb3, #a1c4fd, #c2e9fb);
-  background-size: 1000% 1000%;
-  animation: rainbowFlow 15s ease infinite;
-  border-radius: 12px;
-  padding: 20px;
-  color: white;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  body.dark .track {
+    background: linear-gradient(270deg, #084d89, #db0909, #0c88c1, #0c437c, #c70671);
+    background-size: 1000% 1000%;
+    animation: rainbowFlow 30s ease infinite;
+    border-radius: 43px;
+    border: 6px solid rgba(255, 255, 255, 0.1);
+}
+
 }
 
 @keyframes rainbowFlow {
@@ -147,6 +148,7 @@ body.dark button.active {
     color: #36f5e5;
     width: 45px;
 }
+
 
 
 
