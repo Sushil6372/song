@@ -8,6 +8,7 @@ const shuffleTopBtn = document.getElementById('shuffleTopBtn');
 let currentAudio = null;
 let currentPlayer = null;
 
+// Enable dark mode by default
 document.body.classList.add('dark');
 darkModeBtn.classList.add('active');
 
@@ -82,6 +83,7 @@ fetch('songs.json')
       track.appendChild(player);
       track.appendChild(audio);
       trackList.appendChild(track);
+
       audio.addEventListener('loadedmetadata', () => {
         totalTime.textContent = formatTime(audio.duration);
         seekBar.max = Math.floor(audio.duration);
@@ -98,18 +100,14 @@ fetch('songs.json')
 
       playPauseBtn.addEventListener('click', () => {
         if (audio.paused) {
-          if (audio.currentTime > 0) {
-            audio.play();
-          } else {
-            stopOthers();
-            fadeIn(audio);
-            audio.play();
-          }
+          stopOthers();
+          fadeIn(audio);
+          audio.play();
           playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
           player.classList.add('active');
           currentAudio = audio;
           currentPlayer = player;
-          moveTrackToEnd(track);
+          moveTrackToTop(track);
         } else {
           audio.pause();
           playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -132,13 +130,12 @@ fetch('songs.json')
         currentAudio = randomAudio;
         currentPlayer = random.querySelector('.player');
         random.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-        moveTrackToEnd(random);
+        moveTrackToTop(random);
       });
 
       nextBtn.addEventListener('click', () => {
         const next = track.nextElementSibling;
         if (next) {
-          moveTrackToEnd(track);
           const nextAudio = next.querySelector('audio');
           stopOthers();
           fadeIn(nextAudio);
@@ -147,14 +144,12 @@ fetch('songs.json')
           currentAudio = nextAudio;
           currentPlayer = next.querySelector('.player');
           next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToEnd(next);
+          moveTrackToTop(next);
         }
       });
 
       prevBtn.addEventListener('click', () => {
-        const tracks = Array.from(trackList.children);
-        const index = tracks.indexOf(track);
-        const prev = tracks[index - 1];
+        const prev = track.previousElementSibling;
         if (prev) {
           const prevAudio = prev.querySelector('audio');
           stopOthers();
@@ -164,12 +159,11 @@ fetch('songs.json')
           currentAudio = prevAudio;
           currentPlayer = prev.querySelector('.player');
           prev.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToEnd(prev);
+          moveTrackToTop(prev);
         }
       });
 
       audio.addEventListener('ended', () => {
-        moveTrackToEnd(track);
         const next = track.nextElementSibling;
         if (next) {
           const nextAudio = next.querySelector('audio');
@@ -180,7 +174,7 @@ fetch('songs.json')
           currentAudio = nextAudio;
           currentPlayer = next.querySelector('.player');
           next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToEnd(next);
+          moveTrackToTop(next);
         }
       });
 
@@ -192,10 +186,11 @@ fetch('songs.json')
         player.classList.add('active');
         currentAudio = audio;
         currentPlayer = player;
-        moveTrackToEnd(track);
+        moveTrackToTop(track);
       });
     });
   });
+
 darkModeBtn.addEventListener('click', () => {
   document.body.classList.toggle('dark');
   darkModeBtn.classList.toggle('active');
@@ -269,9 +264,9 @@ function formatTime(seconds) {
   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function moveTrackToEnd(track) {
+function moveTrackToTop(track) {
   if (trackList.contains(track)) {
     trackList.removeChild(track);
-    trackList.appendChild(track);
+    trackList.insertBefore(track, trackList.firstChild);
   }
 }
