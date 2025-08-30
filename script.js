@@ -8,7 +8,6 @@ const shuffleTopBtn = document.getElementById('shuffleTopBtn');
 let currentAudio = null;
 let currentPlayer = null;
 
-// Enable dark mode by default
 document.body.classList.add('dark');
 darkModeBtn.classList.add('active');
 
@@ -100,14 +99,18 @@ fetch('songs.json')
 
       playPauseBtn.addEventListener('click', () => {
         if (audio.paused) {
-          stopOthers();
-          fadeIn(audio);
-          audio.play();
+          if (audio.currentTime > 0) {
+            audio.play();
+          } else {
+            stopOthers();
+            fadeIn(audio);
+            audio.play();
+          }
           playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
           player.classList.add('active');
           currentAudio = audio;
           currentPlayer = player;
-          moveTrackToTop(track);
+          stickTrackToBottom(track);
         } else {
           audio.pause();
           playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -130,10 +133,46 @@ fetch('songs.json')
         currentAudio = randomAudio;
         currentPlayer = random.querySelector('.player');
         random.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-        moveTrackToTop(random);
+        stickTrackToBottom(random);
       });
 
       nextBtn.addEventListener('click', () => {
+        const next = track.nextElementSibling;
+        if (next) {
+          trackList.removeChild(track);
+          trackList.appendChild(track);
+          const nextAudio = next.querySelector('audio');
+          stopOthers();
+          fadeIn(nextAudio);
+          nextAudio.play();
+          next.querySelector('.player').classList.add('active');
+          currentAudio = nextAudio;
+          currentPlayer = next.querySelector('.player');
+          next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
+          stickTrackToBottom(next);
+        }
+      });
+
+      prevBtn.addEventListener('click', () => {
+        const tracks = Array.from(trackList.children);
+        const index = tracks.indexOf(track);
+        const prev = tracks[index - 1];
+        if (prev) {
+          const prevAudio = prev.querySelector('audio');
+          stopOthers();
+          fadeIn(prevAudio);
+          prevAudio.play();
+          prev.querySelector('.player').classList.add('active');
+          currentAudio = prevAudio;
+          currentPlayer = prev.querySelector('.player');
+          prev.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
+          stickTrackToBottom(prev);
+        }
+      });
+
+      audio.addEventListener('ended', () => {
+        trackList.removeChild(track);
+        trackList.appendChild(track);
         const next = track.nextElementSibling;
         if (next) {
           const nextAudio = next.querySelector('audio');
@@ -144,46 +183,9 @@ fetch('songs.json')
           currentAudio = nextAudio;
           currentPlayer = next.querySelector('.player');
           next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(next);
+          stickTrackToBottom(next);
         }
       });
-
-      prevBtn.addEventListener('click', () => {
-        const prev = track.previousElementSibling;
-        if (prev) {
-          const prevAudio = prev.querySelector('audio');
-          stopOthers();
-          fadeIn(prevAudio);
-          prevAudio.play();
-          prev.querySelector('.player').classList.add('active');
-          currentAudio = prevAudio;
-          currentPlayer = prev.querySelector('.player');
-          prev.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(prev);
-        }
-      });
-
-audio.addEventListener('ended', () => {
-  // Move the finished track to the end of the list
-  if (trackList.contains(track)) {
-    trackList.removeChild(track);
-    trackList.appendChild(track);
-  }
-
-  // Play the next track (which is now the one after the moved one)
-  const next = trackList.querySelector('.track');
-  if (next) {
-    const nextAudio = next.querySelector('audio');
-    stopOthers();
-    fadeIn(nextAudio);
-    nextAudio.play();
-    next.querySelector('.player').classList.add('active');
-    currentAudio = nextAudio;
-    currentPlayer = next.querySelector('.player');
-    next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-  }
-});
-
 
       title.addEventListener('click', () => {
         stopOthers();
@@ -193,7 +195,7 @@ audio.addEventListener('ended', () => {
         player.classList.add('active');
         currentAudio = audio;
         currentPlayer = player;
-        moveTrackToTop(track);
+        stickTrackToBottom(track);
       });
     });
   });
@@ -271,10 +273,8 @@ function formatTime(seconds) {
   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function moveTrackToTop(track) {
-  if (trackList.contains(track)) {
-    trackList.removeChild(track);
-    trackList.insertBefore(track, trackList.firstChild);
-  }
+function stickTrackToBottom(track) {
+  document.querySelectorAll('.track').forEach(t => t.classList.remove('sticky-track'));
+  track.classList.add('sticky-track');
 }
 
