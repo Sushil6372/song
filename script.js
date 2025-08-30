@@ -1,273 +1,184 @@
-const musicFolder = 'music/';
-const trackList = document.getElementById('trackList');
-const searchInput = document.getElementById('searchInput');
-const darkModeBtn = document.getElementById('darkModeBtn');
-const globalVolume = document.getElementById('globalVolume');
-const shuffleTopBtn = document.getElementById('shuffleTopBtn');
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const musicFolder = 'music/', trackList = $('#trackList');
+const [searchInput, darkModeBtn, globalVolume, shuffleTopBtn] = ['#searchInput', '#darkModeBtn', '#globalVolume', '#shuffleTopBtn'].map($);
 
-let currentAudio = null;
-let currentPlayer = null;
+let currentAudio = null, currentPlayer = null, currentTrack = null, shouldRestartOnPlay = false;
+const bottomPlayer = $('#bottomPlayer');
+bottomPlayer.innerHTML = `
+  <div class="bp-title"></div>
+  <div class="bp-controls">
+    <button class="bp-prev"><i class="fas fa-backward"></i></button>
+    <button class="bp-play"><i class="fas fa-play"></i></button>
+    <button class="bp-next"><i class="fas fa-forward"></i></button>
+  </div>
+  <div class="bp-progress">
+    <span class="bp-current">0:00</span>
+    <input type="range" class="bp-seek" value="0" min="0" step="1">
+    <span class="bp-total">0:00</span>
+  </div>
+`;
 
-document.body.classList.add('dark');
-darkModeBtn.classList.add('active');
+function formatTime(s){let m=Math.floor(s/60),sec=Math.floor(s%60);return`${m}:${sec<10?'0':''}${sec}`;}
+function fadeIn(audio){
+  audio.volume=0; let v=0, t=parseFloat(globalVolume.value), step=t/30;
+  let i = setInterval(()=>{v+=step;if(v>=t){audio.volume=t;clearInterval(i)}else audio.volume=v},100);
+}
+function stopAll(){
+  $$('.track audio').forEach(a=>{a.pause();a.currentTime=0});
+  $$('.player').forEach(p=>p.classList.remove('active'));
+  $$('.controls button:nth-child(2)').forEach(btn=>btn.innerHTML='<i class="fas fa-play"></i>');
+}
 
-fetch('songs.json')
-  .then(res => res.json())
-  .then(files => {
-    files.forEach((file, i) => {
-      const name = file.replace('.mp3', '').replace(/_/g, ' ');
+function moveTrackToTop(track){if(trackList.contains(track)){trackList.removeChild(track);trackList.insertBefore(track,trackList.firstChild)}}
 
-      const track = document.createElement('div');
-      track.className = 'track';
-      track.setAttribute('data-name', name);
+function updateTrackUI(track, audio) {
+  const playBtn = track.querySelector('.controls button:nth-child(2)');
+  playBtn.innerHTML = audio.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+  track.querySelector('.player').classList.toggle('active', !audio.paused);
+}
+function updateBottomPlayer(track, audio) {
+  bottomPlayer.querySelector('.bp-title').textContent = track.dataset.name;
+  bottomPlayer.querySelector('.bp-seek').max = Math.floor(audio.duration || 0);
+  bottomPlayer.querySelector('.bp-total').textContent = formatTime(audio.duration || 0);
+  bottomPlayer.querySelector('.bp-current').textContent = formatTime(audio.currentTime || 0);
+  bottomPlayer.querySelector('.bp-play').innerHTML = audio.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+  bottomPlayer.classList.add('active');
+}
+function hideBottomPlayer() { bottomPlayer.classList.remove('active'); }
 
-      const title = document.createElement('div');
-      title.className = 'name';
-      title.textContent = name;
+fetch('songs.json').then(r=>r.json()).then(files=>{
+  files.forEach((file,i)=>{
+    const name = file.replace('.mp3','').replace(/_/g,' '), track = document.createElement('div');
+    track.className = 'track'; track.dataset.name = name;
+    track.innerHTML = `
+      <div class="name">${name}</div>
+      <div class="player">
+        <div class="progress">
+          <span>0:00</span>
+          <input type="range" value="0" min="0" step="1" class="custom-seek">
+          <span>0:00</span>
+        </div>
+        <div class="controls">
+          <button><i class="fas fa-backward"></i></button>
+          <button><i class="fas fa-play"></i></button>
+          <button><i class="fas fa-forward"></i></button>
+          <button><i class="fas fa-repeat"></i></button>
+          <button><i class="fas fa-random"></i></button>
+        </div>
+      </div>
+      <audio src="${musicFolder}${file}" preload="metadata"></audio>`;
+    trackList.appendChild(track);
 
-      const audio = document.createElement('audio');
-      audio.src = `${musicFolder}${file}`;
-      audio.preload = 'metadata';
+    const [title, player, audio] = [track.querySelector('.name'), track.querySelector('.player'), track.querySelector('audio')];
+    const [progress, controls] = [player.querySelector('.progress'), player.querySelector('.controls')];
+    const [currentTime, seekBar, totalTime] = [progress.children[0], progress.children[1], progress.children[2]];
+    const [prevBtn, playPauseBtn, nextBtn, loopBtn, shuffleBtn] = controls.children;
 
-      const player = document.createElement('div');
-      player.className = 'player';
+    // Track click seek/play
+    track.addEventListener('click', e => {
+      // Allow only if not clicking controls or progress bar
+      if (
+        e.target.tagName === 'BUTTON' || e.target.tagName === 'I' ||
+        e.target === seekBar
+      ) return;
+      const rect = track.getBoundingClientRect(), x = e.clientX - rect.left;
+      const percent = Math.min(1, Math.max(0, x / rect.width));
+      if (audio.duration) audio.currentTime = audio.duration * percent;
+      playAudio(track, audio, true);
+    });
 
-      const progress = document.createElement('div');
-      progress.className = 'progress';
+    // Progress bar seeking
+    seekBar.addEventListener('input', () => { audio.currentTime = seekBar.value; });
+    seekBar.addEventListener('mousedown', () => { audio.pause(); });
+    seekBar.addEventListener('mouseup', () => { playAudio(track, audio, false); });
 
-      const currentTime = document.createElement('span');
-      currentTime.textContent = '0:00';
+    // Audio events
+    audio.onloadedmetadata = _ => { totalTime.textContent = formatTime(audio.duration); seekBar.max = Math.floor(audio.duration); };
+    audio.ontimeupdate = _ => {
+      seekBar.value = Math.floor(audio.currentTime);
+      currentTime.textContent = formatTime(audio.currentTime);
+      // Update sticky player if this track is playing
+      if (audio === currentAudio) {
+        bottomPlayer.querySelector('.bp-current').textContent = formatTime(audio.currentTime);
+        bottomPlayer.querySelector('.bp-seek').value = Math.floor(audio.currentTime);
+      }
+    };
 
-      const seekBar = document.createElement('input');
-      seekBar.type = 'range';
-      seekBar.value = 0;
-      seekBar.min = 0;
-      seekBar.step = 1;
+    playPauseBtn.onclick = () => playAudio(track, audio, false);
+    loopBtn.onclick = _ => { audio.loop = !audio.loop; loopBtn.classList.toggle('active') };
+    shuffleBtn.onclick = _ => playRandom();
+    nextBtn.onclick = _ => playNext(track.nextElementSibling);
+    prevBtn.onclick = _ => playNext(track.previousElementSibling);
+    audio.onended = _ => playNext(track.nextElementSibling);
+    title.onclick = playPauseBtn.onclick;
 
-      const totalTime = document.createElement('span');
-      totalTime.textContent = '0:00';
-
-      progress.appendChild(currentTime);
-      progress.appendChild(seekBar);
-      progress.appendChild(totalTime);
-
-      const controls = document.createElement('div');
-      controls.className = 'controls';
-
-      const prevBtn = document.createElement('button');
-      prevBtn.innerHTML = '<i class="fas fa-backward"></i>';
-
-      const playPauseBtn = document.createElement('button');
-      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-
-      const nextBtn = document.createElement('button');
-      nextBtn.innerHTML = '<i class="fas fa-forward"></i>';
-
-      const loopBtn = document.createElement('button');
-      loopBtn.innerHTML = '<i class="fas fa-repeat"></i>';
-
-      const shuffleBtn = document.createElement('button');
-      shuffleBtn.innerHTML = '<i class="fas fa-random"></i>';
-
-      controls.appendChild(prevBtn);
-      controls.appendChild(playPauseBtn);
-      controls.appendChild(nextBtn);
-      controls.appendChild(loopBtn);
-      controls.appendChild(shuffleBtn);
-
-      player.appendChild(progress);
-      player.appendChild(controls);
-
-      track.appendChild(title);
-      track.appendChild(player);
-      track.appendChild(audio);
-      trackList.appendChild(track);
-      audio.addEventListener('loadedmetadata', () => {
-        totalTime.textContent = formatTime(audio.duration);
-        seekBar.max = Math.floor(audio.duration);
-      });
-
-      audio.addEventListener('timeupdate', () => {
-        seekBar.value = Math.floor(audio.currentTime);
-        currentTime.textContent = formatTime(audio.currentTime);
-      });
-
-      seekBar.addEventListener('input', () => {
-        audio.currentTime = seekBar.value;
-      });
-
-      playPauseBtn.addEventListener('click', () => {
-        if (audio.paused) {
-          stopOthers();
-          fadeIn(audio);
-          audio.play();
-          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-          player.classList.add('active');
-          currentAudio = audio;
-          currentPlayer = player;
-          moveTrackToTop(track);
+    // Bottom player controls
+    bottomPlayer.querySelector('.bp-play').onclick = () => {
+      if (currentAudio) {
+        if (currentAudio.paused) {
+          if (shouldRestartOnPlay) currentAudio.currentTime = 0;
+          currentAudio.play();
+          shouldRestartOnPlay = false;
         } else {
-          audio.pause();
-          playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+          currentAudio.pause();
+          shouldRestartOnPlay = true;
         }
-      });
+        updateBottomPlayer(currentTrack, currentAudio);
+        updateTrackUI(currentTrack, currentAudio);
+      }
+    };
+    bottomPlayer.querySelector('.bp-prev').onclick = () => {
+      if (currentTrack && currentTrack.previousElementSibling)
+        playAudio(currentTrack.previousElementSibling, currentTrack.previousElementSibling.querySelector('audio'), false);
+    };
+    bottomPlayer.querySelector('.bp-next').onclick = () => {
+      if (currentTrack && currentTrack.nextElementSibling)
+        playAudio(currentTrack.nextElementSibling, currentTrack.nextElementSibling.querySelector('audio'), false);
+    };
+    bottomPlayer.querySelector('.bp-seek').addEventListener('input', e => {
+      if (currentAudio) currentAudio.currentTime = e.target.value;
+    });
 
-      loopBtn.addEventListener('click', () => {
-        audio.loop = !audio.loop;
-        loopBtn.classList.toggle('active');
-      });
-
-      shuffleBtn.addEventListener('click', () => {
-        const tracks = Array.from(document.querySelectorAll('.track'));
-        const random = tracks[Math.floor(Math.random() * tracks.length)];
-        const randomAudio = random.querySelector('audio');
-        stopOthers();
-        fadeIn(randomAudio);
-        randomAudio.play();
-        random.querySelector('.player').classList.add('active');
-        currentAudio = randomAudio;
-        currentPlayer = random.querySelector('.player');
-        random.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-        moveTrackToTop(random);
-      });
-
-      nextBtn.addEventListener('click', () => {
-        const next = track.nextElementSibling;
-        if (next) {
-          trackList.removeChild(track);
-          trackList.appendChild(track);
-          const nextAudio = next.querySelector('audio');
-          stopOthers();
-          fadeIn(nextAudio);
-          nextAudio.play();
-          next.querySelector('.player').classList.add('active');
-          currentAudio = nextAudio;
-          currentPlayer = next.querySelector('.player');
-          next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(next);
-        }
-      });
-
-      prevBtn.addEventListener('click', () => {
-        const prev = track.previousElementSibling;
-        if (prev) {
-          const prevAudio = prev.querySelector('audio');
-          stopOthers();
-          fadeIn(prevAudio);
-          prevAudio.play();
-          prev.querySelector('.player').classList.add('active');
-          currentAudio = prevAudio;
-          currentPlayer = prev.querySelector('.player');
-          prev.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(prev);
-        }
-      });
-
-      audio.addEventListener('ended', () => {
-        const next = track.nextElementSibling;
-        trackList.removeChild(track);
-        trackList.appendChild(track);
-        if (next) {
-          const nextAudio = next.querySelector('audio');
-          stopOthers();
-          fadeIn(nextAudio);
-          nextAudio.play();
-          next.querySelector('.player').classList.add('active');
-          currentAudio = nextAudio;
-          currentPlayer = next.querySelector('.player');
-          next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(next);
-        }
-      });
-
-      title.addEventListener('click', () => {
-        stopOthers();
+    function playAudio(track, audio, seekedByTrack) {
+      stopAll();
+      if (audio.paused || seekedByTrack) {
+        if (shouldRestartOnPlay || seekedByTrack) audio.currentTime = seekedByTrack ? audio.currentTime : 0;
         fadeIn(audio);
         audio.play();
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        player.classList.add('active');
-        currentAudio = audio;
-        currentPlayer = player;
-        moveTrackToTop(track);
-      });
-    });
-  });
-darkModeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  darkModeBtn.classList.toggle('active');
-});
-
-globalVolume.addEventListener('input', () => {
-  const volume = globalVolume.value;
-  document.querySelectorAll('audio').forEach(audio => {
-    audio.volume = volume;
-  });
-});
-
-shuffleTopBtn.addEventListener('click', () => {
-  const tracks = Array.from(trackList.children);
-  const shuffled = tracks.sort(() => Math.random() - 0.5);
-
-  if (currentAudio) {
-    const activeTrack = currentAudio.closest('.track');
-    const filtered = shuffled.filter(t => t !== activeTrack);
-    trackList.innerHTML = '';
-    trackList.appendChild(activeTrack);
-    filtered.forEach(track => trackList.appendChild(track));
-  } else {
-    trackList.innerHTML = '';
-    shuffled.forEach(track => trackList.appendChild(track));
-  }
-
-  shuffleTopBtn.classList.add('active');
-});
-
-searchInput.addEventListener('input', () => {
-  const query = searchInput.value.toLowerCase();
-  document.querySelectorAll('.track').forEach(track => {
-    const name = track.getAttribute('data-name').toLowerCase();
-    track.style.display = name.includes(query) ? '' : 'none';
-  });
-});
-
-function stopOthers() {
-  document.querySelectorAll('audio').forEach(a => {
-    a.pause();
-    a.currentTime = 0;
-  });
-  document.querySelectorAll('.player').forEach(p => {
-    p.classList.remove('active');
-  });
-  document.querySelectorAll('.controls button:nth-child(2)').forEach(btn => {
-    btn.innerHTML = '<i class="fas fa-play"></i>';
-  });
-}
-
-function fadeIn(audio) {
-  audio.volume = 0;
-  let vol = 0;
-  const target = parseFloat(globalVolume.value);
-  const step = target / 30;
-  const interval = setInterval(() => {
-    vol += step;
-    if (vol >= target) {
-      audio.volume = target;
-      clearInterval(interval);
-    } else {
-      audio.volume = vol;
+        shouldRestartOnPlay = false;
+      } else {
+        audio.pause();
+        shouldRestartOnPlay = true;
+      }
+      updateTrackUI(track, audio);
+      currentAudio = audio; currentPlayer = player; currentTrack = track;
+      updateBottomPlayer(track, audio);
+      moveTrackToTop(track);
     }
-  }, 100);
-}
+    function playNext(next) {
+      if (!next) return;
+      playAudio(next, next.querySelector('audio'), false);
+    }
+    function playRandom() {
+      const tracks = Array.from($$('.track')), r = tracks[Math.floor(Math.random()*tracks.length)];
+      playAudio(r, r.querySelector('audio'), false);
+    }
+  });
+  hideBottomPlayer(); // Hide until first play
+});
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
-function moveTrackToTop(track) {
-  if (trackList.contains(track)) {
-    trackList.removeChild(track);
-    trackList.insertBefore(track, trackList.firstChild);
-  }
-}
+darkModeBtn.onclick = _ => { document.body.classList.toggle('dark'); darkModeBtn.classList.toggle('active') };
+globalVolume.oninput = _ => $$('.track audio').forEach(a=>a.volume = globalVolume.value);
+shuffleTopBtn.onclick = _ => {
+  const tracks = Array.from(trackList.children), shuffled = tracks.sort(()=>Math.random()-.5);
+  trackList.innerHTML = '';
+  if (currentAudio) {
+    const active = currentAudio.closest('.track'), rest = shuffled.filter(t=>t!==active);
+    trackList.appendChild(active); rest.forEach(t=>trackList.appendChild(t));
+  } else shuffled.forEach(t=>trackList.appendChild(t));
+  shuffleTopBtn.classList.add('active');
+};
+searchInput.oninput = _ => {
+  const q = searchInput.value.toLowerCase();
+  $$('.track').forEach(t=>t.style.display = t.dataset.name.toLowerCase().includes(q)?'':'none');
+};
