@@ -163,20 +163,27 @@ fetch('songs.json')
         }
       });
 
-      audio.addEventListener('ended', () => {
-        const next = track.nextElementSibling;
-        if (next) {
-          const nextAudio = next.querySelector('audio');
-          stopOthers();
-          fadeIn(nextAudio);
-          nextAudio.play();
-          next.querySelector('.player').classList.add('active');
-          currentAudio = nextAudio;
-          currentPlayer = next.querySelector('.player');
-          next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(next);
-        }
-      });
+audio.addEventListener('ended', () => {
+  // Move the finished track to the end of the list
+  if (trackList.contains(track)) {
+    trackList.removeChild(track);
+    trackList.appendChild(track);
+  }
+
+  // Play the next track (which is now the one after the moved one)
+  const next = trackList.querySelector('.track');
+  if (next) {
+    const nextAudio = next.querySelector('audio');
+    stopOthers();
+    fadeIn(nextAudio);
+    nextAudio.play();
+    next.querySelector('.player').classList.add('active');
+    currentAudio = nextAudio;
+    currentPlayer = next.querySelector('.player');
+    next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
+  }
+});
+
 
       title.addEventListener('click', () => {
         stopOthers();
@@ -270,3 +277,4 @@ function moveTrackToTop(track) {
     trackList.insertBefore(track, trackList.firstChild);
   }
 }
+
