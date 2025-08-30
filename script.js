@@ -109,7 +109,7 @@ fetch('songs.json')
           player.classList.add('active');
           currentAudio = audio;
           currentPlayer = player;
-          moveTrackToTop(track);
+          moveTrackToEnd(track);
         } else {
           audio.pause();
           playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -132,13 +132,13 @@ fetch('songs.json')
         currentAudio = randomAudio;
         currentPlayer = random.querySelector('.player');
         random.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-        moveTrackToTop(random);
+        moveTrackToEnd(random);
       });
 
       nextBtn.addEventListener('click', () => {
         const next = track.nextElementSibling;
         if (next) {
-          moveTrackToTop(track);
+          moveTrackToEnd(track);
           const nextAudio = next.querySelector('audio');
           stopOthers();
           fadeIn(nextAudio);
@@ -147,7 +147,7 @@ fetch('songs.json')
           currentAudio = nextAudio;
           currentPlayer = next.querySelector('.player');
           next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(next);
+          moveTrackToEnd(next);
         }
       });
 
@@ -164,12 +164,12 @@ fetch('songs.json')
           currentAudio = prevAudio;
           currentPlayer = prev.querySelector('.player');
           prev.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(prev);
+          moveTrackToEnd(prev);
         }
       });
 
       audio.addEventListener('ended', () => {
-        moveTrackToTop(track);
+        moveTrackToEnd(track);
         const next = track.nextElementSibling;
         if (next) {
           const nextAudio = next.querySelector('audio');
@@ -180,7 +180,7 @@ fetch('songs.json')
           currentAudio = nextAudio;
           currentPlayer = next.querySelector('.player');
           next.querySelector('.controls button:nth-child(2)').innerHTML = '<i class="fas fa-pause"></i>';
-          moveTrackToTop(next);
+          moveTrackToEnd(next);
         }
       });
 
@@ -192,11 +192,10 @@ fetch('songs.json')
         player.classList.add('active');
         currentAudio = audio;
         currentPlayer = player;
-        moveTrackToTop(track);
+        moveTrackToEnd(track);
       });
     });
   });
-
 darkModeBtn.addEventListener('click', () => {
   document.body.classList.toggle('dark');
   darkModeBtn.classList.toggle('active');
@@ -270,9 +269,9 @@ function formatTime(seconds) {
   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function moveTrackToTop(track) {
+function moveTrackToEnd(track) {
   if (trackList.contains(track)) {
     trackList.removeChild(track);
-    trackList.insertBefore(track, trackList.firstChild);
+    trackList.appendChild(track);
   }
 }
