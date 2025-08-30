@@ -6,9 +6,16 @@ body {
   text-align: center;
 }
 
+h1{
+  font-size: 33px;
+  font-weight: bold;
+  font-family: cursive;
+}
+
 body.dark {
-  background: #1e1e1e;
-  color: #eee;
+    background: #01301c;
+    color: #cdf5db;
+    font-family: 'FontAwesome'; 
 }
 
 .controls {
@@ -20,14 +27,13 @@ body.dark {
 }
 
 input[type="text"], button, input[type="range"] {
-padding: 6px;
+    padding: 8px;
     border-radius: 16px;
-    border: 2px solid gray;
     font-weight: bold;
-    border: 2px solid #3ab7d1;
-    background: repeating-linear-gradient(45deg, black, transparent 100px);
-    background-color: #2b8edf;
-    color: wheat;
+    border: 2px solid #b1edb3;
+    background: repeating-linear-gradient(45deg, #08300b, transparent 100px);
+    background-color: #12b168;
+    color: #76f5bc;
 }
 
 
@@ -38,8 +44,10 @@ button.active {
 }
 
 body.dark button.active {
-  border: 2px solid lightblue;
-  background-color: #333;
+border: 2px solid rgb(157 249 195);
+    background-color: rgb(28 84 37);
+    width: 45px;
+    height: 45px;
 }
 
 .track {
@@ -59,7 +67,7 @@ body.dark button.active {
 }
 
 body.dark .track {
-  background: #2a2a2a;
+  background: linear-gradient(43deg, #012013, #01301c, #298f64);
 }
 
 .name {
@@ -86,6 +94,7 @@ body.dark .track {
   gap: 10px;
   margin-bottom: 8px;
   font-weight: bold;
+  font-size: 20px;
 }
 
 .player .progress input[type="range"] {
@@ -128,4 +137,5 @@ body.dark button.active {
     color: #36f5e5;
     width: 45px;
 }
+
 
