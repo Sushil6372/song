@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Play Music</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <div class="logo-title">
+    <h1>Play Music</h1>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search song..." />
+    <input type="range" id="globalVolume" min="0" max="1" step="0.01" value="1" />
+    <button id="shuffleTopBtn"><i class="fas fa-random"></i></button>
+    <button id="darkModeBtn"><i class="fas fa-moon"></i></button>
+  </div>
+
+  <div class="nav" id="artistNav"></div>
+
+  <div class="top-actions">
+    <button id="playAllBtn"><i class="fas fa-play"></i> Play</button>
+    <button id="shuffleAllBtn"><i class="fas fa-random"></i> Shuffle</button>
+  </div>
+
+  <div id="trackList">
+    <!-- Original Track Item Structure -->
+    <div class="track">
+      <img class="artist-thumb" src="singer.jpg" alt="Artist" />
+      <button class="play-btn"><i class="fas fa-play"></i></button>
+      <span>Apna Bana Le</span>
+    </div>
+
+    <div class="track">
+      <img class="artist-thumb" src="singer.jpg" alt="Artist" />
+      <button class="play-btn"><i class="fas fa-play"></i></button>
+      <span>Bekhayali</span>
+    </div>
+  </div>
+
+  <div id="playerBar" class="player-bar" style="display:none;">
+    <div class="player-info">
+      <span id="playerSongTitle">Song Title</span>
+      <span id="playerSongArtist" style="font-size:1rem;opacity:0.85;"></span>
+      <div class="player-controls">
+        <button id="prevBtn"><i class="fas fa-backward"></i></button>
+        <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+        <button id="nextBtn"><i class="fas fa-forward"></i></button>
+        <button id="repeatBtn"><i class="fas fa-redo"></i></button>
+        <button id="shuffleBtn"><i class="fas fa-random"></i></button>
+      </div>
+      <div class="player-progress">
+        <span id="currentTime">0:00</span>
+        <input type="range" id="progressBar" min="0" max="100" value="0" />
+        <span id="duration">0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
