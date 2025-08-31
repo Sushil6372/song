@@ -661,7 +661,49 @@
     "language": "Hindi",
     "title": "Straight Ballin"
   },
-
+  {
+    "file": "arijit-hindi-Apna Bana Le.mp3",
+    "artist": "Arijit",
+    "language": "Hindi",
+    "title": "Apna Bana Le"
+  },
+  {
+    "file": "arijit-hindi-Bekhayali.mp3",
+    "artist": "Arijit",
+    "language": "Hindi",
+    "title": "Bekhayali"
+  },
+  {
+    "file": "arijit-hindi-Kaise Hua.mp3",
+    "artist": "Arijit",
+    "language": "Hindi",
+    "title": "Kaise Hua"
+  },
+  {
+    "file": "emiway-hindi-Pain.mp3",
+    "artist": "Emiway",
+    "language": "Hindi",
+    "title": "Pain"
+  },
+  {
+    "file": "emiway-hindi-Tu Tera Dekhe.mp3",
+    "artist": "Emiway",
+    "language": "Hindi",
+    "title": "Tu Tera Dekhe"
+  },
+  {
+    "file": "krsna-hindi-Been a While.mp3",
+    "artist": "Krsna",
+    "language": "Hindi",
+    "title": "Been A While"
+  },
+  {
+    "file": "krsna-hindi-Blowing Up.mp3",
+    "artist": "Krsna",
+    "language": "Hindi",
+    "title": "Blowing Up"
+  },
+  
   {
     "file": "hip-hop-hindi-Zindagi.mp3",
     "artist": "Hip",
@@ -669,4 +711,5 @@
     "title": "Hindi-Zindagi"
   }
 ]
+
 
