@@ -1,758 +1,134 @@
 [
   {
-    "file": "11K.mp3",
-    "artist": "",
-    "language": "",
-    "title": "11K"
-  },
-  {
-    "file": "Aaina.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Aaina"
-  },
-  {
-    "file": "AAJ BHI AAP.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Aaj Bhi Aap"
-  },
-  {
-    "file": "Alone, Pt. II.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Alone, Pt. II.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Alone, Pt. Ii"
   },
   {
-    "file": "Alvida.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Alvida"
-  },
-  {
-    "file": "arijit-hindi-Apna Bana Le.mp3",
-    "artist": "Arijit",
+    "file": "english-hindi-Attention.mp3",
+    "artist": "English",
     "language": "Hindi",
-    "title": "Apna Bana Le"
-  },
-  {
-    "file": "arijit-hindi-Bekhayali.mp3",
-    "artist": "Arijit",
-    "language": "Hindi",
-    "title": "Bekhayali"
-  },
-  {
-    "file": "arijit-hindi-Kaise Hua.mp3",
-    "artist": "Arijit",
-    "language": "Hindi",
-    "title": "Kaise Hua"
-  },
-  {
-    "file": "Attention.mp3",
-    "artist": "",
-    "language": "",
     "title": "Attention"
   },
   {
-    "file": "Baby.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Baby.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Baby"
   },
   {
-    "file": "Balenciaga.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Balenciaga"
-  },
-  {
-    "file": "Believe.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Believe.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Believe"
   },
   {
-    "file": "Better life.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Better Life"
-  },
-  {
-    "file": "BLUE EYES.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Blue Eyes"
-  },
-  {
-    "file": "Calm Down.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Calm Down.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Calm Down"
   },
   {
-    "file": "Changed.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Changed"
-  },
-  {
-    "file": "Closer.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Closer.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Closer"
   },
   {
-    "file": "Desi Kalakaar.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Desi Kalakaar"
-  },
-  {
-    "file": "Dheere Dheere.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Dheere Dheere"
-  },
-  {
-    "file": "Die With A Smile.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Die With A Smile.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Die With A Smile"
   },
   {
-    "file": "divine-hindi-100 Million.mp3",
-    "artist": "Divine",
+    "file": "english-hindi-Dusk Till Dawn.mp3",
+    "artist": "English",
     "language": "Hindi",
-    "title": "100 Million"
-  },
-  {
-    "file": "divine-hindi-3_59.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "3_59"
-  },
-  {
-    "file": "divine-hindi-Aag.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Aag"
-  },
-  {
-    "file": "divine-hindi-Baazigar.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Baazigar"
-  },
-  {
-    "file": "divine-hindi-Bornfire.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Bornfire"
-  },
-  {
-    "file": "divine-hindi-Flex Kar.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Flex Kar"
-  },
-  {
-    "file": "divine-hindi-Hisaab.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Hisaab"
-  },
-  {
-    "file": "divine-hindi-Mera Bhai.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Mera Bhai"
-  },
-  {
-    "file": "divine-hindi-Mirchi.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Mirchi"
-  },
-  {
-    "file": "divine-hindi-O Sajna.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "O Sajna"
-  },
-  {
-    "file": "divine-hindi-Punya Paap.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Punya Paap"
-  },
-  {
-    "file": "divine-hindi-Rain.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Rain"
-  },
-  {
-    "file": "divine-hindi-Shehnai.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Shehnai"
-  },
-  {
-    "file": "divine-hindi-Straight Ballin.mp3",
-    "artist": "Divine",
-    "language": "Hindi",
-    "title": "Straight Ballin"
-  },
-  {
-    "file": "Dope Shope.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Dope Shope"
-  },
-  {
-    "file": "Drill Karte.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Drill Karte"
-  },
-  {
-    "file": "Dusk Till Dawn.mp3",
-    "artist": "",
-    "language": "",
     "title": "Dusk Till Dawn"
   },
   {
-    "file": "emiway-hindi-Pain.mp3",
-    "artist": "Emiway",
+    "file": "english-hindi-Faded.mp3",
+    "artist": "English",
     "language": "Hindi",
-    "title": "Pain"
-  },
-  {
-    "file": "emiway-hindi-Tu Tera Dekhe.mp3",
-    "artist": "Emiway",
-    "language": "Hindi",
-    "title": "Tu Tera Dekhe"
-  },
-  {
-    "file": "Faded.mp3",
-    "artist": "",
-    "language": "",
     "title": "Faded"
   },
   {
-    "file": "Feel My Love .mp3",
-    "artist": "",
-    "language": "",
-    "title": "Feel My Love"
-  },
-  {
-    "file": "Finding Her FM.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Finding Her Fm"
-  },
-  {
-    "file": "Finding Her.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Finding Her"
-  },
-  {
-    "file": "G-Yaan.mp3",
-    "artist": "",
-    "language": "",
-    "title": "G-Yaan"
-  },
-  {
-    "file": "Galat Karam.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Galat Karam"
-  },
-  {
-    "file": "God Dam.mp3",
-    "artist": "",
-    "language": "",
-    "title": "God Dam"
-  },
-  {
-    "file": "Godzilla.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Godzilla.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Godzilla"
   },
   {
-    "file": "Google Pay.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Google Pay"
-  },
-  {
-    "file": "GUESS.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Guess"
-  },
-  {
-    "file": "Gulabi Aankhen.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Gulabi Aankhen"
-  },
-  {
-    "file": "Heeriye.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Heeriye"
-  },
-  {
-    "file": "Hola Amigo.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Hola Amigo"
-  },
-  {
-    "file": "I Guess.mp3",
-    "artist": "",
-    "language": "",
-    "title": "I Guess"
-  },
-  {
-    "file": "Iktara.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Iktara"
-  },
-  {
-    "file": "Intentions.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Intentions.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Intentions"
   },
   {
-    "file": "Ishq Sufiyana.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Ishq Sufiyana"
-  },
-  {
-    "file": "Jaikal Mahakal.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Jaikal Mahakal"
-  },
-  {
-    "file": "Jealous.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Jealous"
-  },
-  {
-    "file": "Jo Tum Mere Ho.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Jo Tum Mere Ho"
-  },
-  {
-    "file": "Joota Japani.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Joota Japani"
-  },
-  {
-    "file": "K.Y.U.mp3",
-    "artist": "",
-    "language": "",
-    "title": "K.Y.U"
-  },
-  {
-    "file": "Kaley Sheshe.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Kaley Sheshe"
-  },
-  {
-    "file": "Khatta Flow.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Khatta Flow"
-  },
-  {
-    "file": "Knock Knock.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Knock Knock"
-  },
-  {
-    "file": "krsna-hindi-Been a While.mp3",
-    "artist": "Krsna",
+    "file": "english-hindi-Let Me Down Slowly.mp3",
+    "artist": "English",
     "language": "Hindi",
-    "title": "Been A While"
-  },
-  {
-    "file": "krsna-hindi-Blowing Up.mp3",
-    "artist": "Krsna",
-    "language": "Hindi",
-    "title": "Blowing Up"
-  },
-  {
-    "file": "Laal Pari.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Laal Pari"
-  },
-  {
-    "file": "Le Aaunga.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Le Aaunga"
-  },
-  {
-    "file": "Let Me Down Slowly.mp3",
-    "artist": "",
-    "language": "",
     "title": "Let Me Down Slowly"
   },
   {
-    "file": "Let Me Love You.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Let Me Love You.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Let Me Love You"
   },
   {
-    "file": "Lil Bunty.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Lil Bunty"
-  },
-  {
-    "file": "Lily.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Lily.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Lily"
   },
   {
-    "file": "Luka Chippi.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Luka Chippi"
-  },
-  {
-    "file": "Lungi Dance.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Lungi Dance"
-  },
-  {
-    "file": "Machayenge 4.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Machayenge 4"
-  },
-  {
-    "file": "Memories.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Memories.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Memories"
   },
   {
-    "file": "Millionaire.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Millionaire"
-  },
-  {
-    "file": "Momma.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Momma"
-  },
-  {
-    "file": "Mor Bela 2.0.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Mor Bela 2.0"
-  },
-  {
-    "file": "Narmahat.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Narmahat"
-  },
-  {
-    "file": "NGL.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Ngl"
-  },
-  {
-    "file": "No Chaina.mp3",
-    "artist": "",
-    "language": "",
-    "title": "No Chaina"
-  },
-  {
-    "file": "O Saathi.mp3",
-    "artist": "",
-    "language": "",
-    "title": "O Saathi"
-  },
-  {
-    "file": "ONE THOUSAND MILES.mp3",
-    "artist": "",
-    "language": "",
-    "title": "One Thousand Miles"
-  },
-  {
-    "file": "Pal Pal.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Pal Pal"
-  },
-  {
-    "file": "Param Sundari.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Param Sundari"
-  },
-  {
-    "file": "Payal.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Payal"
-  },
-  {
-    "file": "People.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-People.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "People"
   },
   {
-    "file": "Perfect.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Perfect.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Perfect"
   },
   {
-    "file": "RAASHAH.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Raashah"
-  },
-  {
-    "file": "Raataan Lambiyan.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Raataan Lambiyan"
-  },
-  {
-    "file": "raftar-hindi-Never Back Down.mp3",
-    "artist": "Raftar",
+    "file": "english-hindi-Shape of You.mp3",
+    "artist": "English",
     "language": "Hindi",
-    "title": "Never Back Down"
-  },
-  {
-    "file": "Ram Siya Ram.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Ram Siya Ram"
-  },
-  {
-    "file": "Rasa Jamudali.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Rasa Jamudali"
-  },
-  {
-    "file": "REGRET.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Regret"
-  },
-  {
-    "file": "Saiyaara (Movie Saiyaara).mp3",
-    "artist": "",
-    "language": "",
-    "title": "Saiyaara (Movie Saiyaara)"
-  },
-  {
-    "file": "Sanu Ek Pal.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Sanu Ek Pal"
-  },
-  {
-    "file": "Shape of You.mp3",
-    "artist": "",
-    "language": "",
     "title": "Shape Of You"
   },
   {
-    "file": "Sheikh Chilli.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Sheikh Chilli"
-  },
-  {
-    "file": "Sitara.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Sitara"
-  },
-  {
-    "file": "Snake.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Snake"
-  },
-  {
-    "file": "Soch Na Sake.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Soch Na Sake"
-  },
-  {
-    "file": "Soniyo.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Soniyo"
-  },
-  {
-    "file": "Sorry.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Sorry.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Sorry"
   },
   {
-    "file": "Sunflower.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Sunflower.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Sunflower"
   },
   {
-    "file": "Sunny Sunny.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Sunny Sunny"
-  },
-  {
-    "file": "Tera Ban Jaunga.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Tera Ban Jaunga"
-  },
-  {
-    "file": "Tera Chehra.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Tera Chehra"
-  },
-  {
-    "file": "Tere Sang.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Tere Sang"
-  },
-  {
-    "file": "Thanks To My Haters.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Thanks To My Haters"
-  },
-  {
-    "file": "Thunder.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-Thunder.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "Thunder"
   },
   {
-    "file": "To Pain Sathire.mp3",
-    "artist": "",
-    "language": "",
-    "title": "To Pain Sathire"
-  },
-  {
-    "file": "Tose Naina.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Tose Naina"
-  },
-  {
-    "file": "TRAP PRAA.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Trap Praa"
-  },
-  {
-    "file": "TT.Shoutdown.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Tt.Shoutdown"
-  },
-  {
-    "file": "Tu Har Lamha.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Tu Har Lamha"
-  },
-  {
-    "file": "Tu Hi Mera.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Tu Hi Mera"
-  },
-  {
-    "file": "Ulala Ulala.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Ulala Ulala"
-  },
-  {
-    "file": "Wavy.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Wavy"
-  },
-  {
-    "file": "We Dont Talk Anymore.mp3",
-    "artist": "",
-    "language": "",
+    "file": "english-hindi-We Dont Talk Anymore.mp3",
+    "artist": "English",
+    "language": "Hindi",
     "title": "We Dont Talk Anymore"
-  },
-  {
-    "file": "Woh Raat.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Woh Raat"
-  },
-  {
-    "file": "Word to the Wise.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Word To The Wise"
-  },
-  {
-    "file": "YADON SE.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Yadon Se"
-  },
-  {
-    "file": "Yakeen.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Yakeen"
-  },
-  {
-    "file": "You know.mp3",
-    "artist": "",
-    "language": "",
-    "title": "You Know"
-  },
-  {
-    "file": "Zindagi.mp3",
-    "artist": "",
-    "language": "",
-    "title": "Zindagi"
   }
 ]
